@@ -23,7 +23,11 @@ export class InputHandler {
 
     canvas.addEventListener("keydown", (e) => {
       // Only process player actions if game is in PLAYING state
-      if (game.state === game.states.playing && this.keyBindings.getKeysByGroup("player").includes(e.key)) {
+      if (
+        game.state === game.states.playing &&
+        (this.keyBindings.getKeysByGroup("player1").includes(e.key) ||
+          this.keyBindings.getKeysByGroup("player2").includes(e.key))
+      ) {
         this.actions.add(this.getKeyBinding(this.keyBindings.keyToAction, e.key).action);
       }
       if (this.keyBindings.getKeysByGroup("debug").includes(e.key)) {
@@ -32,7 +36,11 @@ export class InputHandler {
       this.game.state.handleInput(e);
     });
     canvas.addEventListener("keyup", (e) => {
-      if (game.state === game.states.playing && this.keyBindings.getKeysByGroup("player").includes(e.key)) {
+      if (
+        game.state === game.states.playing &&
+        (this.keyBindings.getKeysByGroup("player1").includes(e.key) ||
+          this.keyBindings.getKeysByGroup("player2").includes(e.key))
+      ) {
         this.actions.delete(this.getKeyBinding(this.keyBindings.keyToAction, e.key).action);
       }
     });

@@ -42,9 +42,13 @@ export const playerActions = {
   player1: {
     moveLeft: "p1moveLeft",
     moveRight: "p1moveRight",
+    moveUp: "p1moveUp",
+    moveDown: "p1moveDown",
   },
   player2: {
     moveLeft: "p2moveLeft",
     moveRight: "p2moveRight",
+    moveUp: "p2moveUp",
+    moveDown: "p2moveDown",
   },
 };

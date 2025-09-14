@@ -5,13 +5,15 @@ import { PhysicsComponent } from "../entities/components/PhysicsComponent";
 import { PhysicsRenderSystem } from "../systems/PhysicsRenderSystem";
 import { PhysicsSystem } from "../systems/PhysicsSystem";
 import { GameState } from "./GameStates";
+import { PlayerInteractionSystem } from "../systems/PlayerInteractionSystem";
+import { Paddle } from "../entities/Paddle";
 
 export class PlayingState extends GameState {
   subState: "active" | "paused" = "active";
 
   boardCenterPos = { x: 400, y: 300 };
-  player1StartCenterPos = { x: this.boardCenterPos.x, y: 100 };
-  player2StartCenterPos = { x: this.boardCenterPos.x, y: 500 };
+  paddle1StartCenterPos = { x: this.boardCenterPos.x, y: 100 };
+  paddle2StartCenterPos = { x: this.boardCenterPos.x, y: 500 };
   ballStartVelocity = { x: 0, y: 5 };
 
   override enter(): void {
@@ -21,14 +23,23 @@ export class PlayingState extends GameState {
     Matter.Body.setVelocity(ball.getComponent<PhysicsComponent>("physics")!.matterBody, this.ballStartVelocity);
     this.game.session.entities.push(ball);
 
-    Matter.Body.setPosition(
-      this.game.session.players.player1.getComponent<PhysicsComponent>("physics")!.matterBody,
-      this.player1StartCenterPos
+    let paddle1 = new Paddle(
+      this.game,
+      GAME_CONFIG.paddleTypes.fast,
+      GAME_CONFIG.paddleLocations[0],
+      GAME_CONFIG.players[0]
     );
-    Matter.Body.setPosition(
-      this.game.session.players.player2.getComponent<PhysicsComponent>("physics")!.matterBody,
-      this.player2StartCenterPos
+    Matter.Body.setPosition(paddle1.getComponent<PhysicsComponent>("physics")!.matterBody, this.paddle1StartCenterPos);
+    this.game.session.entities.push(paddle1);
+
+    let paddle2 = new Paddle(
+      this.game,
+      GAME_CONFIG.paddleTypes.normal,
+      GAME_CONFIG.paddleLocations[1],
+      GAME_CONFIG.players[1]
     );
+    Matter.Body.setPosition(paddle2.getComponent<PhysicsComponent>("physics")!.matterBody, this.paddle2StartCenterPos);
+    this.game.session.entities.push(paddle2);
   }
 
   override exit(): void {
@@ -51,12 +62,14 @@ export class PlayingState extends GameState {
       return;
     }
 
+    PlayerInteractionSystem.update(this.game, this.game.session.entities);
+
     PhysicsSystem.update(deltaTime);
   }
 
   evaluateEndGameCondition(): void {}
 
-  override draw(context: CanvasRenderingContext2D, deltaTime: number): void {
+  override draw(context: CanvasRenderingContext2D /*, deltaTime: number*/): void {
     this.game.userInterface.drawBackground(context);
 
     PhysicsRenderSystem.draw(context);

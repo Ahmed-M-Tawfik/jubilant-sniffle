@@ -1,3 +1,5 @@
+import type { Bounds } from "matter-js";
+
 export interface IGameConfig {
   paddleTypes: {
     normal: IPaddleConfig;
@@ -11,6 +13,10 @@ export interface IGameConfig {
     heavy: IBallConfig;
   };
 
+  players: [IPlayerConfig, IPlayerConfig];
+
+  paddleLocations: [IPaddleLocationConfig, IPaddleLocationConfig];
+
   gameScale: number;
 
   // environment
@@ -18,6 +24,19 @@ export interface IGameConfig {
   maxTime: number;
   winningScore: number;
   initialLives: number;
+}
+
+export interface IPlayerConfig {
+  playerId: number;
+}
+
+export interface IPaddleLocationConfig {
+  bounds: Bounds;
+
+  initialPosition: {
+    x: number;
+    y: number;
+  };
 }
 
 export interface IPaddleConfig {

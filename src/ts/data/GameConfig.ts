@@ -43,6 +43,50 @@ export const GAME_CONFIG: IGameConfig = {
     },
   },
 
+  players: [
+    {
+      playerId: 1,
+    },
+    {
+      playerId: 2,
+    },
+  ],
+
+  paddleLocations: [
+    {
+      bounds: {
+        min: {
+          x: 0,
+          y: 0,
+        },
+        max: {
+          x: 800,
+          y: 160,
+        },
+      },
+      initialPosition: {
+        x: 400,
+        y: 100,
+      },
+    },
+    {
+      bounds: {
+        min: {
+          x: 0,
+          y: 440,
+        },
+        max: {
+          x: 800,
+          y: 440,
+        },
+      },
+      initialPosition: {
+        x: 400,
+        y: 500,
+      },
+    },
+  ],
+
   gameScale: 10,
 
   // environment
