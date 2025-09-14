@@ -1,12 +1,34 @@
 .DS_Store
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
 Thumbs.db
 
 dist/
 node_modules/
 
-# ignore dist and node_modules folders even if under another folder e.g. ecs/dist
-**/dist/
-**/node_modules/
-
 *.ts.map
+
+*.d.ts.idea
 *.d.ts
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+
