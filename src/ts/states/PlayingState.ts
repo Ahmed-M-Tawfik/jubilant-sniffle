@@ -42,7 +42,7 @@ export class PlayingState extends GameState {
     Matter.Body.setPosition(paddle2.getComponent<PhysicsComponent>("physics")!.matterBody, this.paddle2StartCenterPos);
     this.game.session.entities.push(paddle2);
 
-    let board = new Board(this.game, GAME_CONFIG.board);
+    let board = new Board(this.game, GAME_CONFIG.board, GAME_CONFIG.paddleLocations);
     this.game.session.entities.push(board);
   }
 

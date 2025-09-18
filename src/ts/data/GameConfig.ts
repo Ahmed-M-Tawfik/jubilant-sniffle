@@ -77,7 +77,7 @@ export const GAME_CONFIG: IGameConfig = {
         },
         max: {
           x: 800,
-          y: 440,
+          y: 600,
         },
       },
       initialPosition: {

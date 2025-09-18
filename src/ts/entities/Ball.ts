@@ -6,6 +6,7 @@ import { GameEntity } from "./GameEntity";
 import { addPhysicsComponentAndMatterBody } from "../utils/entityUtils";
 import Matter from "matter-js";
 import { GAME_CONFIG } from "../data/GameConfig";
+import { CollisionCategory } from "../systems/PhysicsSystem";
 
 export class Ball extends GameEntity {
   constructor(game: Game, ballConfig: IBallConfig, initialPosition: { x: number; y: number }) {
@@ -21,6 +22,10 @@ export class Ball extends GameEntity {
         friction: 0,
         frictionAir: 0,
         frictionStatic: 0,
+        collisionFilter: {
+          mask: CollisionCategory.wall | CollisionCategory.paddle,
+          category: CollisionCategory.ball,
+        },
       })
     );
     this.addComponent<PhysicsRenderComponent>("physicsrender", new PhysicsRenderComponent(colour, "circle"));

@@ -7,6 +7,7 @@ import { GameEntity } from "./GameEntity";
 import { PaddleComponent } from "./components/PaddleComponent";
 import { PhysicsRenderComponent } from "./components/PhysicsRenderComponent";
 import { PlayerComponent } from "./components/PlayerComponent";
+import { CollisionCategory } from "../systems/PhysicsSystem";
 
 export class Paddle extends GameEntity {
   constructor(
@@ -32,6 +33,10 @@ export class Paddle extends GameEntity {
           density,
           restitution: 1,
           inertia: Infinity, // Prevent rotation from physics interactions
+          collisionFilter: {
+            mask: CollisionCategory.wall | CollisionCategory.ball | CollisionCategory.paddleRestraint,
+            category: CollisionCategory.paddle,
+          },
         }
       )
     );
