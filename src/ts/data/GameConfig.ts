@@ -87,6 +87,18 @@ export const GAME_CONFIG: IGameConfig = {
     },
   ],
 
+  board: {
+    boundaryThickness: 100,
+    width: 800,
+    height: 600,
+    sides: {
+      top: { type: "goal" },
+      bottom: { type: "goal" },
+      left: { type: "bounce" },
+      right: { type: "bounce" },
+    },
+  },
+
   gameScale: 10,
 
   // environment

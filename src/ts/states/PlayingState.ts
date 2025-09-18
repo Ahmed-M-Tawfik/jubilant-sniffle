@@ -7,6 +7,7 @@ import { PhysicsSystem } from "../systems/PhysicsSystem";
 import { GameState } from "./GameStates";
 import { PlayerInteractionSystem } from "../systems/PlayerInteractionSystem";
 import { Paddle } from "../entities/Paddle";
+import { Board } from "../entities/Board";
 
 export class PlayingState extends GameState {
   subState: "active" | "paused" = "active";
@@ -40,6 +41,9 @@ export class PlayingState extends GameState {
     );
     Matter.Body.setPosition(paddle2.getComponent<PhysicsComponent>("physics")!.matterBody, this.paddle2StartCenterPos);
     this.game.session.entities.push(paddle2);
+
+    let board = new Board(this.game, GAME_CONFIG.board);
+    this.game.session.entities.push(board);
   }
 
   override exit(): void {

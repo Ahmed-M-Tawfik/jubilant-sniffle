@@ -31,6 +31,7 @@ export class Paddle extends GameEntity {
         {
           density,
           restitution: 1,
+          inertia: Infinity, // Prevent rotation from physics interactions
         }
       )
     );

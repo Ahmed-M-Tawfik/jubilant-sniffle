@@ -17,6 +17,8 @@ export interface IGameConfig {
 
   paddleLocations: [IPaddleLocationConfig, IPaddleLocationConfig];
 
+  board: IBoardConfig;
+
   gameScale: number;
 
   // environment
@@ -55,4 +57,18 @@ export interface IBallConfig {
   radius: number;
 
   colour: string;
+}
+
+export interface IBoardConfig {
+  boundaryThickness: number;
+
+  width: number;
+  height: number;
+
+  sides: {
+    top: { type: "goal" | "bounce" };
+    bottom: { type: "goal" | "bounce" };
+    left: { type: "goal" | "bounce" };
+    right: { type: "goal" | "bounce" };
+  };
 }
