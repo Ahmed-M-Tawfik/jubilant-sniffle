@@ -1,12 +1,11 @@
-import type { IBallConfig } from "../ConfigTypes";
-import type { Game } from "../../ts/Main";
-import { BallComponent } from "./components/BallComponent";
-import { PhysicsRenderComponent } from "./components/PhysicsRenderComponent";
-import { GameEntity } from "./GameEntity";
-import { addPhysicsComponentAndMatterBody } from "../utils/entityUtils";
 import Matter from "matter-js";
+import type { Game } from "../../ts/Main";
+import type { IBallConfig } from "../ConfigTypes";
 import { GAME_CONFIG } from "../data/GameConfig";
 import { CollisionCategory } from "../systems/PhysicsSystem";
+import { addPhysicsComponentAndMatterBody } from "../utils/entityUtils";
+import { BallComponent } from "./components/BallComponent";
+import { GameEntity } from "./GameEntity";
 
 export class Ball extends GameEntity {
   constructor(game: Game, ballConfig: IBallConfig, initialPosition: { x: number; y: number }) {
@@ -26,8 +25,10 @@ export class Ball extends GameEntity {
           mask: CollisionCategory.wall | CollisionCategory.paddle,
           category: CollisionCategory.ball,
         },
+        render: {
+          fillStyle: colour,
+        },
       })
     );
-    this.addComponent<PhysicsRenderComponent>("physicsrender", new PhysicsRenderComponent(colour, "circle"));
   }
 }

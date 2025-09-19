@@ -2,12 +2,11 @@ import Matter from "matter-js";
 import { type Game } from "../../ts/Main";
 import type { IPaddleConfig, IPaddleLocationConfig, IPlayerConfig } from "../ConfigTypes";
 import { GAME_CONFIG } from "../data/GameConfig";
+import { CollisionCategory } from "../systems/PhysicsSystem";
 import { addPhysicsComponentAndMatterBody } from "../utils/entityUtils";
 import { GameEntity } from "./GameEntity";
 import { PaddleComponent } from "./components/PaddleComponent";
-import { PhysicsRenderComponent } from "./components/PhysicsRenderComponent";
 import { PlayerComponent } from "./components/PlayerComponent";
-import { CollisionCategory } from "../systems/PhysicsSystem";
 
 export class Paddle extends GameEntity {
   constructor(
@@ -30,6 +29,8 @@ export class Paddle extends GameEntity {
         width * GAME_CONFIG.gameScale,
         height * GAME_CONFIG.gameScale,
         {
+          friction: 0,
+          frictionStatic: 0,
           density,
           restitution: 1,
           inertia: Infinity, // Prevent rotation from physics interactions
@@ -37,9 +38,11 @@ export class Paddle extends GameEntity {
             mask: CollisionCategory.wall | CollisionCategory.ball | CollisionCategory.paddleRestraint,
             category: CollisionCategory.paddle,
           },
+          render: {
+            fillStyle: colour,
+          },
         }
       )
     );
-    this.addComponent<PhysicsRenderComponent>("physicsrender", new PhysicsRenderComponent(colour, "rectangle"));
   }
 }

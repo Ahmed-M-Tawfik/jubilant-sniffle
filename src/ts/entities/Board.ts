@@ -36,6 +36,9 @@ export class Board extends GameEntity {
           mask: CollisionCategory.paddle,
           category: CollisionCategory.paddleRestraint,
         },
+        render: {
+          visible: false,
+        },
       }
     );
     Matter.World.add(PhysicsSystem.world, paddleFilteredBound);
@@ -53,6 +56,9 @@ export class Board extends GameEntity {
         collisionFilter: {
           mask: CollisionCategory.paddle,
           category: CollisionCategory.paddleRestraint,
+        },
+        render: {
+          visible: false,
         },
       }
     );
