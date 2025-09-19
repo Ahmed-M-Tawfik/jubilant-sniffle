@@ -24,7 +24,6 @@ node_modules/
 *.ts.map
 
 *.d.ts.idea
-*.d.ts
 *.suo
 *.ntvs*
 *.njsproj
