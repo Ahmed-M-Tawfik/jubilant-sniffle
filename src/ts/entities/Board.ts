@@ -4,6 +4,8 @@ import type { Game } from "../Main.ts";
 import { CollisionCategory, PhysicsSystem } from "../systems/PhysicsSystem.ts";
 import { BoardComponent } from "./components/BoardComponent.ts";
 import { GameEntity } from "./GameEntity.ts";
+import type { BodyWithEntity } from "./components/PhysicsComponent.ts";
+import { ScoreComponent } from "./components/ScoreComponent.ts";
 
 export class Board extends GameEntity {
   constructor(game: Game, config: IBoardConfig, paddleLocations: [IPaddleLocationConfig, IPaddleLocationConfig]) {
@@ -27,10 +29,14 @@ export class Board extends GameEntity {
       bodies: [addPaddleRestraintVisual(paddleLocations[0]), addPaddleRestraintVisual(paddleLocations[1])],
     });
     this.addComponent<BoardComponent>("board", new BoardComponent(bounds, paddleBounds, visualisedPaddleBounds));
-    Matter.World.add(PhysicsSystem.world, bounds);
-    Matter.World.add(PhysicsSystem.world, paddleBounds);
-    Matter.World.add(PhysicsSystem.world, visualisedPaddleBounds);
-    console.log(visualisedPaddleBounds);
+    Matter.World.add(PhysicsSystem.world, [bounds, paddleBounds, visualisedPaddleBounds]);
+    [bounds, paddleBounds, visualisedPaddleBounds].forEach((composite: Matter.Composite) => {
+      composite.bodies.forEach((body: BodyWithEntity) => {
+        body.gameEntity = this;
+      });
+    });
+
+    this.addComponent<ScoreComponent>("score", new ScoreComponent(1));
   }
 }
 
@@ -88,7 +94,13 @@ function createBoundaryBody(
     case "top":
       rectWidth = width + extraCoverage * 2;
       rectHeight = boundaryThickness;
-      return Matter.Bodies.rectangle(0 + rectWidth / 2, 0 - rectHeight / 2, rectWidth, rectHeight, getOptions(side));
+      return Matter.Bodies.rectangle(
+        0 + rectWidth / 2,
+        0 - rectHeight / 2,
+        rectWidth,
+        rectHeight,
+        getOptions(side, type)
+      );
     case "bottom":
       rectWidth = width + extraCoverage * 2;
       rectHeight = boundaryThickness;
@@ -97,12 +109,18 @@ function createBoundaryBody(
         height + rectHeight / 2,
         rectWidth,
         rectHeight,
-        getOptions(side)
+        getOptions(side, type)
       );
     case "left":
       rectWidth = boundaryThickness;
       rectHeight = height + extraCoverage * 2;
-      return Matter.Bodies.rectangle(0 - rectWidth / 2, 0 + rectHeight / 2, rectWidth, rectHeight, getOptions(side));
+      return Matter.Bodies.rectangle(
+        0 - rectWidth / 2,
+        0 + rectHeight / 2,
+        rectWidth,
+        rectHeight,
+        getOptions(side, type)
+      );
     case "right":
       rectWidth = boundaryThickness;
       rectHeight = height + extraCoverage * 2;
@@ -111,16 +129,16 @@ function createBoundaryBody(
         0 + rectHeight / 2,
         rectWidth,
         rectHeight,
-        getOptions(side)
+        getOptions(side, type)
       );
     default:
       throw new Error(`Unknown side: ${side}`);
   }
 }
 
-function getOptions(side: string) {
+function getOptions(side: string, type: "goal" | "bounce"): Matter.IChamferableBodyDefinition {
   return {
-    label: "Bounds: " + side,
+    label: type + ": " + side,
     isStatic: true,
     collisionFilter: {
       mask: CollisionCategory.paddle | CollisionCategory.ball,

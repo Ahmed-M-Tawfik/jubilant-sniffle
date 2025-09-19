@@ -1,13 +1,8 @@
-import { Composite } from "matter-js";
-import { PhysicsSystem } from "./PhysicsSystem";
-
 export class PhysicsRenderSystem {
-  static draw(context: CanvasRenderingContext2D) {
-    const bodies = Composite.allBodies(PhysicsSystem.world);
-
+  static draw(context: CanvasRenderingContext2D, physicsBodies: Matter.Body[]) {
     context.save();
 
-    bodies.forEach((body) => {
+    physicsBodies.forEach((body) => {
       if (body.render && !body.render.visible) {
         return;
       }

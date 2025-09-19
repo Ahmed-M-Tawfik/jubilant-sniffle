@@ -5,10 +5,11 @@ import type { Game } from "../Main";
 export class GameSession {
   game: Game;
   entities: GameEntity[] = [];
-  lives: number = 0;
+
   time: number = 0;
   maxTime: number = 0;
-  score: number = 0;
+
+  scorePerPlayer: [number, number] = [0, 0];
   winningScore: number = 0;
 
   constructor(game: Game) {
@@ -19,12 +20,10 @@ export class GameSession {
   reset(): void {
     this.entities = [];
 
-    // this.lives = GAME_CONFIG.initialLives;
-
     this.time = 0;
     this.maxTime = GAME_CONFIG.maxTime;
 
-    // this.score = 0;
+    this.scorePerPlayer = [0, 0];
     this.winningScore = GAME_CONFIG.winningScore;
   }
 }

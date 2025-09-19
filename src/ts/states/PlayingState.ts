@@ -1,4 +1,4 @@
-import Matter from "matter-js";
+import Matter, { Composite } from "matter-js";
 import { GAME_CONFIG } from "../data/GameConfig";
 import { Ball } from "../entities/Ball";
 import { PhysicsComponent } from "../entities/components/PhysicsComponent";
@@ -8,6 +8,7 @@ import { GameState } from "./GameStates";
 import { PlayerInteractionSystem } from "../systems/PlayerInteractionSystem";
 import { Paddle } from "../entities/Paddle";
 import { Board } from "../entities/Board";
+import { ScoreSystem } from "../systems/ScoreSystem";
 
 export class PlayingState extends GameState {
   subState: "active" | "paused" = "active";
@@ -44,9 +45,13 @@ export class PlayingState extends GameState {
     );
     Matter.Body.setPosition(paddle2.getComponent<PhysicsComponent>("physics")!.matterBody, this.paddle2StartCenterPos);
     this.game.session.entities.push(paddle2);
+
+    ScoreSystem.start(this.game);
   }
 
   override exit(): void {
+    ScoreSystem.stop();
+
     // Clear all input actions to prevent stuck keys when leaving playing state
     this.game.input.actions.clear();
   }
@@ -76,7 +81,7 @@ export class PlayingState extends GameState {
   override draw(context: CanvasRenderingContext2D /*, deltaTime: number*/): void {
     this.game.userInterface.drawBackground(context);
 
-    PhysicsRenderSystem.draw(context);
+    PhysicsRenderSystem.draw(context, Composite.allBodies(PhysicsSystem.world));
 
     // UI updates at the end to ensure they are drawn on top
     this.game.userInterface.drawForeground(context);

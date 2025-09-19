@@ -1,14 +1,14 @@
 import { playerActions, type IKeyBinding } from "../ui/UserInterfaceConfigTypes";
 
 export const DEFAULT_KEY_BINDINGS: IKeyBinding[] = [
-  { action: playerActions.player1.moveLeft, key: "ArrowLeft", group: "player1" },
-  { action: playerActions.player1.moveRight, key: "ArrowRight", group: "player1" },
-  { action: playerActions.player1.moveUp, key: "ArrowUp", group: "player1" },
-  { action: playerActions.player1.moveDown, key: "ArrowDown", group: "player1" },
-  { action: playerActions.player2.moveLeft, key: "a", group: "player2" },
-  { action: playerActions.player2.moveRight, key: "d", group: "player2" },
-  { action: playerActions.player2.moveUp, key: "w", group: "player2" },
-  { action: playerActions.player2.moveDown, key: "s", group: "player2" },
+  { action: playerActions.player0.moveLeft, key: "ArrowLeft", group: "player0" },
+  { action: playerActions.player0.moveRight, key: "ArrowRight", group: "player0" },
+  { action: playerActions.player0.moveUp, key: "ArrowUp", group: "player0" },
+  { action: playerActions.player0.moveDown, key: "ArrowDown", group: "player0" },
+  { action: playerActions.player1.moveLeft, key: "a", group: "player1" },
+  { action: playerActions.player1.moveRight, key: "d", group: "player1" },
+  { action: playerActions.player1.moveUp, key: "w", group: "player1" },
+  { action: playerActions.player1.moveDown, key: "s", group: "player1" },
 
   { action: "pause", key: "p", group: "game" },
 

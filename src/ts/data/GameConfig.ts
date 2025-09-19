@@ -45,10 +45,10 @@ export const GAME_CONFIG: IGameConfig = {
 
   players: [
     {
-      playerId: 1,
+      playerId: 0,
     },
     {
-      playerId: 2,
+      playerId: 1,
     },
   ],
 

@@ -1,9 +1,10 @@
 import Matter from "matter-js";
-import { PhysicsComponent } from "../entities/components/PhysicsComponent";
+import { PhysicsComponent, type BodyWithEntity } from "../entities/components/PhysicsComponent";
 import type { GameEntity } from "../entities/GameEntity";
 import { PhysicsSystem } from "../systems/PhysicsSystem";
 
-export function addPhysicsComponentAndMatterBody(entity: GameEntity, matterBody: Matter.Body) {
+export function addPhysicsComponentAndMatterBody(entity: GameEntity, matterBody: BodyWithEntity): void {
+  matterBody.gameEntity = entity;
   entity.addComponent("physics", new PhysicsComponent(matterBody));
   Matter.World.add(PhysicsSystem.world, matterBody);
 }

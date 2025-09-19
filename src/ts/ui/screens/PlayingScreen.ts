@@ -17,7 +17,9 @@ export class PlayingScreen extends GameScreen {
     context.save();
     context.fillStyle = "white";
     context.font = "24px Arial";
-    context.fillText(`Time: ${(this.game.session.time * 0.001).toFixed(2)}`, 10, 30);
+    context.fillText(`${this.game.session.scorePerPlayer[1]}`, 10, context.canvas.height / 2 - 30);
+    context.fillText(`${(this.game.session.time * 0.001).toFixed(2)}`, 10, context.canvas.height / 2);
+    context.fillText(`${this.game.session.scorePerPlayer[0]}`, 10, context.canvas.height / 2 + 30);
     context.restore();
   }
 }

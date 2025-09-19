@@ -16,6 +16,20 @@ export class PlayerInteractionSystem {
 
         const body = physics.matterBody;
 
+        if (player.playerId === 0) {
+          if (game.input.actions.has(playerActions.player0.moveLeft)) {
+            Matter.Body.applyForce(body, body.position, { x: -10, y: 0 });
+          }
+          if (game.input.actions.has(playerActions.player0.moveRight)) {
+            Matter.Body.applyForce(body, body.position, { x: 10, y: 0 });
+          }
+          if (game.input.actions.has(playerActions.player0.moveUp)) {
+            Matter.Body.applyForce(body, body.position, { x: 0, y: -10 });
+          }
+          if (game.input.actions.has(playerActions.player0.moveDown)) {
+            Matter.Body.applyForce(body, body.position, { x: 0, y: 10 });
+          }
+        }
         if (player.playerId === 1) {
           if (game.input.actions.has(playerActions.player1.moveLeft)) {
             Matter.Body.applyForce(body, body.position, { x: -10, y: 0 });
@@ -27,20 +41,6 @@ export class PlayerInteractionSystem {
             Matter.Body.applyForce(body, body.position, { x: 0, y: -10 });
           }
           if (game.input.actions.has(playerActions.player1.moveDown)) {
-            Matter.Body.applyForce(body, body.position, { x: 0, y: 10 });
-          }
-        }
-        if (player.playerId === 2) {
-          if (game.input.actions.has(playerActions.player2.moveLeft)) {
-            Matter.Body.applyForce(body, body.position, { x: -10, y: 0 });
-          }
-          if (game.input.actions.has(playerActions.player2.moveRight)) {
-            Matter.Body.applyForce(body, body.position, { x: 10, y: 0 });
-          }
-          if (game.input.actions.has(playerActions.player2.moveUp)) {
-            Matter.Body.applyForce(body, body.position, { x: 0, y: -10 });
-          }
-          if (game.input.actions.has(playerActions.player2.moveDown)) {
             Matter.Body.applyForce(body, body.position, { x: 0, y: 10 });
           }
         }
