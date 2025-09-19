@@ -9,7 +9,7 @@ export class Board extends GameEntity {
   constructor(game: Game, config: IBoardConfig, paddleLocations: [IPaddleLocationConfig, IPaddleLocationConfig]) {
     super(game);
 
-    const compositeBody = Matter.Composite.create({
+    const bounds = Matter.Composite.create({
       bodies: [
         createBoundaryBody("top", config.boundaryThickness, config.width, config.height, config.sides.top.type),
         createBoundaryBody("bottom", config.boundaryThickness, config.width, config.height, config.sides.bottom.type),
@@ -17,53 +17,56 @@ export class Board extends GameEntity {
         createBoundaryBody("right", config.boundaryThickness, config.width, config.height, config.sides.right.type),
       ],
     });
-    this.addComponent<BoardComponent>("board", new BoardComponent(compositeBody));
-    Matter.World.add(PhysicsSystem.world, compositeBody);
-
-    let boundaryThickness = config.boundaryThickness;
-
-    let location = paddleLocations[0];
-    let width = location.bounds.max.x - location.bounds.min.x;
-    let heightFromBorder = location.bounds.max.y - location.bounds.min.y;
-    let paddleFilteredBound = Matter.Bodies.rectangle(
-      location.bounds.min.x + width / 2,
-      heightFromBorder + boundaryThickness / 2,
-      width,
-      boundaryThickness,
-      {
-        isStatic: true,
-        collisionFilter: {
-          mask: CollisionCategory.paddle,
-          category: CollisionCategory.paddleRestraint,
-        },
-        render: {
-          visible: false,
-        },
-      }
-    );
-    Matter.World.add(PhysicsSystem.world, paddleFilteredBound);
-
-    location = paddleLocations[1];
-    width = location.bounds.max.x - location.bounds.min.x;
-    heightFromBorder = location.bounds.max.y - location.bounds.min.y;
-    paddleFilteredBound = Matter.Bodies.rectangle(
-      location.bounds.min.x + width / 2,
-      config.height - heightFromBorder - boundaryThickness / 2,
-      width,
-      boundaryThickness,
-      {
-        isStatic: true,
-        collisionFilter: {
-          mask: CollisionCategory.paddle,
-          category: CollisionCategory.paddleRestraint,
-        },
-        render: {
-          visible: false,
-        },
-      }
-    );
-    Matter.World.add(PhysicsSystem.world, paddleFilteredBound);
+    const paddleBounds = Matter.Composite.create({
+      bodies: [
+        addPaddleRestraint(paddleLocations[0], config, true),
+        addPaddleRestraint(paddleLocations[1], config, false),
+      ],
+    });
+    const visualisedPaddleBounds = Matter.Composite.create({
+      bodies: [addPaddleRestraintVisual(paddleLocations[0]), addPaddleRestraintVisual(paddleLocations[1])],
+    });
+    this.addComponent<BoardComponent>("board", new BoardComponent(bounds, paddleBounds, visualisedPaddleBounds));
+    Matter.World.add(PhysicsSystem.world, bounds);
+    Matter.World.add(PhysicsSystem.world, paddleBounds);
+    Matter.World.add(PhysicsSystem.world, visualisedPaddleBounds);
+    console.log(visualisedPaddleBounds);
   }
+}
+
+function addPaddleRestraint(location: IPaddleLocationConfig, config: IBoardConfig, isTop: boolean): Matter.Body {
+  const boundaryThickness = config.boundaryThickness;
+  const width = location.bounds.max.x - location.bounds.min.x;
+  const heightFromBorder = location.bounds.max.y - location.bounds.min.y;
+  const y = isTop ? heightFromBorder + boundaryThickness / 2 : config.height - heightFromBorder - boundaryThickness / 2;
+  return Matter.Bodies.rectangle(location.bounds.min.x + width / 2, y, width, boundaryThickness, {
+    isStatic: true,
+    collisionFilter: {
+      mask: CollisionCategory.paddle,
+      category: CollisionCategory.paddleRestraint,
+    },
+    render: {
+      visible: false,
+    },
+  });
+}
+
+function addPaddleRestraintVisual(location: IPaddleLocationConfig): Matter.Body {
+  // create rectangle using the bounds
+  const width = location.bounds.max.x - location.bounds.min.x;
+  const height = location.bounds.max.y - location.bounds.min.y;
+  return Matter.Bodies.rectangle(location.bounds.min.x + width / 2, location.bounds.min.y + height / 2, width, height, {
+    label: "Paddle Restraint " + location.initialPosition.x + "," + location.initialPosition.y,
+    isStatic: true,
+    collisionFilter: {
+      category: CollisionCategory.visualOnly,
+    },
+    render: {
+      opacity: 0,
+      strokeStyle: "red",
+      lineWidth: 5,
+    },
+  });
 }
 
 function createBoundaryBody(
@@ -117,7 +120,7 @@ function createBoundaryBody(
 function getOptions(side: string) {
   return {
     isStatic: true,
-    label: side,
+    label: "Bounds: " + side,
     collisionFilter: {
       mask: CollisionCategory.paddle | CollisionCategory.ball,
       category: CollisionCategory.wall,

@@ -20,6 +20,9 @@ export class PlayingState extends GameState {
   override enter(): void {
     this.subState = "active";
 
+    let board = new Board(this.game, GAME_CONFIG.board, GAME_CONFIG.paddleLocations);
+    this.game.session.entities.push(board);
+
     let ball = new Ball(this.game, GAME_CONFIG.ballTypes.fast, this.boardCenterPos);
     Matter.Body.setVelocity(ball.getComponent<PhysicsComponent>("physics")!.matterBody, this.ballStartVelocity);
     this.game.session.entities.push(ball);
@@ -41,9 +44,6 @@ export class PlayingState extends GameState {
     );
     Matter.Body.setPosition(paddle2.getComponent<PhysicsComponent>("physics")!.matterBody, this.paddle2StartCenterPos);
     this.game.session.entities.push(paddle2);
-
-    let board = new Board(this.game, GAME_CONFIG.board, GAME_CONFIG.paddleLocations);
-    this.game.session.entities.push(board);
   }
 
   override exit(): void {

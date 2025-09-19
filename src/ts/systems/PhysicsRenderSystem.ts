@@ -22,11 +22,15 @@ export class PhysicsRenderSystem {
       }
       context.lineTo(vertices[0].x, vertices[0].y);
 
-      // context.lineWidth = 0;
-      // context.strokeStyle = "#555";
-      // context.stroke();
-      context.fillStyle = body.render && body.render.fillStyle ? body.render.fillStyle : "#555";
-      context.fill();
+      if (body.render && body.render.lineWidth && body.render.strokeStyle) {
+        context.lineWidth = body.render.lineWidth;
+        context.strokeStyle = body.render.strokeStyle;
+        context.stroke();
+      }
+      if (body.render && body.render.opacity && body.render.fillStyle) {
+        context.fillStyle = body.render.fillStyle;
+        context.fill();
+      }
     });
 
     context.restore();

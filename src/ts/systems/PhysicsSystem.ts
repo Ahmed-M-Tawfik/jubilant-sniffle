@@ -10,6 +10,7 @@ export enum CollisionCategory {
   paddle = 0b010,
   wall = 0b100,
   paddleRestraint = 0b1000,
+  visualOnly = 0b10000,
 }
 
 export class PhysicsSystem {

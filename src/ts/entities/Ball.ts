@@ -16,6 +16,7 @@ export class Ball extends GameEntity {
     addPhysicsComponentAndMatterBody(
       this,
       Matter.Bodies.circle(initialPosition.x, initialPosition.y, radius * GAME_CONFIG.gameScale, {
+        label: "Ball",
         density,
         restitution: 1,
         friction: 0,

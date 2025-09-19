@@ -29,6 +29,8 @@ export class Paddle extends GameEntity {
         width * GAME_CONFIG.gameScale,
         height * GAME_CONFIG.gameScale,
         {
+          label:
+            "Paddle: " + playerId + " " + paddleLocation.initialPosition.x + "," + paddleLocation.initialPosition.y,
           friction: 0,
           frictionStatic: 0,
           density,
