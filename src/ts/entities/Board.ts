@@ -40,6 +40,7 @@ function addPaddleRestraint(location: IPaddleLocationConfig, config: IBoardConfi
   const heightFromBorder = location.bounds.max.y - location.bounds.min.y;
   const y = isTop ? heightFromBorder + boundaryThickness / 2 : config.height - heightFromBorder - boundaryThickness / 2;
   return Matter.Bodies.rectangle(location.bounds.min.x + width / 2, y, width, boundaryThickness, {
+    label: "Paddle Restraint: " + location.initialPosition.x + "," + location.initialPosition.y,
     isStatic: true,
     collisionFilter: {
       mask: CollisionCategory.paddle,
@@ -56,7 +57,7 @@ function addPaddleRestraintVisual(location: IPaddleLocationConfig): Matter.Body 
   const width = location.bounds.max.x - location.bounds.min.x;
   const height = location.bounds.max.y - location.bounds.min.y;
   return Matter.Bodies.rectangle(location.bounds.min.x + width / 2, location.bounds.min.y + height / 2, width, height, {
-    label: "Paddle Restraint " + location.initialPosition.x + "," + location.initialPosition.y,
+    label: "Paddle Restraint Visual: " + location.initialPosition.x + "," + location.initialPosition.y,
     isStatic: true,
     collisionFilter: {
       category: CollisionCategory.visualOnly,
@@ -119,8 +120,8 @@ function createBoundaryBody(
 
 function getOptions(side: string) {
   return {
-    isStatic: true,
     label: "Bounds: " + side,
+    isStatic: true,
     collisionFilter: {
       mask: CollisionCategory.paddle | CollisionCategory.ball,
       category: CollisionCategory.wall,

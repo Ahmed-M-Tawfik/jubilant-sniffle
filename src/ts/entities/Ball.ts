@@ -19,7 +19,6 @@ export class Ball extends GameEntity {
         label: "Ball",
         density,
         restitution: 1,
-        friction: 0,
         frictionAir: 0,
         frictionStatic: 0,
         collisionFilter: {
