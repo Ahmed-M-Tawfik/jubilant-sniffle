@@ -33,7 +33,6 @@ export class MainMenuScreen extends GameScreen {
     this.startGameVs2ndPlayerBtn?.remove();
   }
 
-  override drawBackground(context: CanvasRenderingContext2D): void {}
   override drawForeground(context: CanvasRenderingContext2D): void {
     context.save();
     context.fillStyle = this.userInterfaceConfig.colours.primaryBackground;

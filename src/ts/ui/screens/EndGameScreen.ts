@@ -21,7 +21,6 @@ export class EndGameScreen extends GameScreen {
     this.backToMainMenuBtn?.remove();
   }
 
-  override drawBackground(context: CanvasRenderingContext2D): void {}
   override drawForeground(context: CanvasRenderingContext2D): void {
     let scores: [number, number] = this.game.session.scorePerPlayer;
     let winner: number = scores[0] > scores[1] ? 1 : 2;
