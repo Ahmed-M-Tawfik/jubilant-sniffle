@@ -75,6 +75,9 @@ export class Game {
       // print location of mouse on canvas
       console.log(`Mouse position: ${this.input.debugMousePosTracking.x}, ${this.input.debugMousePosTracking.y}`);
     }
+    if (event.key === this.input.getKeyBinding(this.input.keyBindings.actionToKey, "debug_add_score").key) {
+      this.session.scorePerPlayer[0]++;
+    }
   }
 }
 

@@ -1,12 +1,8 @@
 import { GameScreen } from "./GameScreen";
 
 export class PlayingScreen extends GameScreen {
-  override onEnter(): void {
-    console.log("Entered PlayingScreen");
-  }
-  override onExit(): void {
-    console.log("Exited PlayingScreen");
-  }
+  override onEnter(): void {}
+  override onExit(): void {}
   drawBackground(context: CanvasRenderingContext2D): void {
     context.save();
     context.fillStyle = "black";

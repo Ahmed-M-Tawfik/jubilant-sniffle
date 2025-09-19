@@ -1,15 +1,9 @@
-import { type Game } from "../../../ts/Main";
 import { StartGameButton } from "../buttons/MainMenuButtons";
-import type { IUserInterfaceConfig } from "../UserInterfaceConfigTypes";
 import { GameScreen } from "./GameScreen";
 
 export class MainMenuScreen extends GameScreen {
   startGameVsAiBtn: StartGameButton | undefined;
   startGameVs2ndPlayerBtn: StartGameButton | undefined;
-
-  constructor(game: Game, userInterfaceConfig: IUserInterfaceConfig) {
-    super(game, userInterfaceConfig);
-  }
 
   override onEnter(): void {
     this.startGameVsAiBtn = new StartGameButton(

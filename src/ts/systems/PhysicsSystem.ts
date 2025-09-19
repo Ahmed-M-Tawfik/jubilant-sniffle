@@ -28,4 +28,9 @@ export class PhysicsSystem {
   static update(deltaTime: number): void {
     Matter.Engine.update(this.engine, deltaTime);
   }
+
+  static stop(): void {
+    // remove all bodies and composites from the world
+    Matter.Composite.clear(this.world, false);
+  }
 }

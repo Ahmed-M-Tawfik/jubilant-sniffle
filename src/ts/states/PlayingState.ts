@@ -9,6 +9,7 @@ import { PlayerInteractionSystem } from "../systems/PlayerInteractionSystem";
 import { Paddle } from "../entities/Paddle";
 import { Board } from "../entities/Board";
 import { ScoreSystem } from "../systems/ScoreSystem";
+import { CheckGameEndSystem } from "../systems/CheckGameEndSystem";
 
 export class PlayingState extends GameState {
   subState: "active" | "paused" = "active";
@@ -19,6 +20,8 @@ export class PlayingState extends GameState {
   ballStartVelocity = { x: 0, y: 5 };
 
   override enter(): void {
+    this.game.session.reset();
+
     this.subState = "active";
 
     let board = new Board(this.game, GAME_CONFIG.board, GAME_CONFIG.paddleLocations);
@@ -54,14 +57,14 @@ export class PlayingState extends GameState {
 
     // Clear all input actions to prevent stuck keys when leaving playing state
     this.game.input.actions.clear();
+
+    PhysicsSystem.stop();
   }
 
   override update(deltaTime: number): void {
     if (this.subState === "paused") return;
 
     this.game.session.time += deltaTime;
-
-    this.evaluateEndGameCondition();
 
     this.runUpdates(deltaTime);
   }
@@ -71,14 +74,14 @@ export class PlayingState extends GameState {
       return;
     }
 
+    CheckGameEndSystem.update(this.game);
+
     PlayerInteractionSystem.update(this.game, this.game.session.entities);
 
     PhysicsSystem.update(deltaTime);
   }
 
-  evaluateEndGameCondition(): void {}
-
-  override draw(context: CanvasRenderingContext2D /*, deltaTime: number*/): void {
+  override draw(context: CanvasRenderingContext2D): void {
     this.game.userInterface.drawBackground(context);
 
     PhysicsRenderSystem.draw(context, Composite.allBodies(PhysicsSystem.world));
