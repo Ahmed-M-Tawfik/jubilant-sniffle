@@ -1,5 +1,4 @@
 import Matter, { Composite } from "matter-js";
-import { GAME_CONFIG } from "../data/GameConfig";
 import { Ball } from "../entities/Ball";
 import { PhysicsComponent } from "../entities/components/PhysicsComponent";
 import { PhysicsRenderSystem } from "../systems/PhysicsRenderSystem";
@@ -20,34 +19,37 @@ export class PlayingState extends GameState {
   ballStartVelocity = { x: 0, y: 5 };
 
   override enter(): void {
+    let gameConfig = this.game.session.gameConfig;
     this.game.session.reset();
 
     this.subState = "active";
+    this.game.session.winningScore = gameConfig.gameplay.level.winningScore;
+    this.game.session.maxTime = gameConfig.gameplay.level.maxTime;
 
-    let board = new Board(this.game, GAME_CONFIG.board, GAME_CONFIG.paddleLocations);
+    let board = new Board(this.game, gameConfig.board, gameConfig.paddleLocations);
     this.game.session.entities.push(board);
 
-    let ball = new Ball(this.game, GAME_CONFIG.ballTypes.fast, this.boardCenterPos);
+    let ball = new Ball(this.game, gameConfig.ballTypes.fast, this.boardCenterPos);
     Matter.Body.setVelocity(ball.getComponent<PhysicsComponent>("physics")!.matterBody, this.ballStartVelocity);
     this.game.session.entities.push(ball);
 
+    let paddle0 = new Paddle(
+      this.game,
+      gameConfig.paddleTypes[gameConfig.gameplay.players.player0.selectedPaddle],
+      gameConfig.paddleLocations[gameConfig.gameplay.players.player0.selectedPosition],
+      gameConfig.players[0]
+    );
+    Matter.Body.setPosition(paddle0.getComponent<PhysicsComponent>("physics")!.matterBody, this.paddle1StartCenterPos);
+    this.game.session.entities.push(paddle0);
+
     let paddle1 = new Paddle(
       this.game,
-      GAME_CONFIG.paddleTypes.fast,
-      GAME_CONFIG.paddleLocations[0],
-      GAME_CONFIG.players[0]
+      gameConfig.paddleTypes[gameConfig.gameplay.players.player1.selectedPaddle],
+      gameConfig.paddleLocations[gameConfig.gameplay.players.player1.selectedPosition],
+      gameConfig.players[1]
     );
-    Matter.Body.setPosition(paddle1.getComponent<PhysicsComponent>("physics")!.matterBody, this.paddle1StartCenterPos);
+    Matter.Body.setPosition(paddle1.getComponent<PhysicsComponent>("physics")!.matterBody, this.paddle2StartCenterPos);
     this.game.session.entities.push(paddle1);
-
-    let paddle2 = new Paddle(
-      this.game,
-      GAME_CONFIG.paddleTypes.normal,
-      GAME_CONFIG.paddleLocations[1],
-      GAME_CONFIG.players[1]
-    );
-    Matter.Body.setPosition(paddle2.getComponent<PhysicsComponent>("physics")!.matterBody, this.paddle2StartCenterPos);
-    this.game.session.entities.push(paddle2);
 
     ScoreSystem.start(this.game);
   }

@@ -1,7 +1,6 @@
 import Matter from "matter-js";
 import { type Game } from "../../ts/Main";
 import type { IPaddleConfig, IPaddleLocationConfig, IPlayerConfig } from "../ConfigTypes";
-import { GAME_CONFIG } from "../data/GameConfig";
 import { CollisionCategory } from "../systems/PhysicsSystem";
 import { addPhysicsComponentAndMatterBody } from "../utils/entityUtils";
 import { GameEntity } from "./GameEntity";
@@ -26,8 +25,8 @@ export class Paddle extends GameEntity {
       Matter.Bodies.rectangle(
         paddleLocation.initialPosition.x,
         paddleLocation.initialPosition.y,
-        width * GAME_CONFIG.gameScale,
-        height * GAME_CONFIG.gameScale,
+        width * this.game.session.gameConfig.gameScale,
+        height * this.game.session.gameConfig.gameScale,
         {
           label:
             "Paddle: " + playerId + " " + paddleLocation.initialPosition.x + "," + paddleLocation.initialPosition.y,

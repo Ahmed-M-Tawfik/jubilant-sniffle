@@ -19,13 +19,31 @@ export interface IGameConfig {
 
   board: IBoardConfig;
 
+  gameplay: IGameplayConfig;
+
   gameScale: number;
 
-  // environment
-  maxParticles: number;
   maxTime: number;
   winningScore: number;
-  initialLives: number;
+}
+
+export interface IGameplayConfig {
+  players: {
+    player0: {
+      selectedPaddle: "normal" | "fast" | "wide";
+      selectedPosition: 0 | 1;
+    };
+    player1: {
+      selectedPaddle: "normal" | "fast" | "wide";
+      selectedPosition: 0 | 1;
+    };
+  };
+  level: {
+    winningScore: number;
+    maxTime: number; // in seconds
+    rounds: number;
+    roundEndsOn: "onEveryScore" | "onlyOnMaxScore";
+  };
 }
 
 export interface IPlayerConfig {

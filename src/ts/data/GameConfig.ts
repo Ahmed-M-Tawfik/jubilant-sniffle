@@ -99,11 +99,27 @@ export const GAME_CONFIG: IGameConfig = {
     },
   },
 
+  gameplay: {
+    players: {
+      player0: {
+        selectedPaddle: "normal",
+        selectedPosition: 0,
+      },
+      player1: {
+        selectedPaddle: "fast",
+        selectedPosition: 1,
+      },
+    },
+    level: {
+      winningScore: 5,
+      maxTime: 20, // in seconds
+      rounds: 3,
+      roundEndsOn: "onlyOnMaxScore",
+    },
+  },
+
   gameScale: 10,
 
-  // environment
-  maxParticles: 200,
   maxTime: 10000,
   winningScore: 5,
-  initialLives: 5,
 };

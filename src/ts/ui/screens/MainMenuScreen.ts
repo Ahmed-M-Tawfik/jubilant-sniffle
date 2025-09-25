@@ -2,26 +2,37 @@ import { StartGameButton } from "../buttons/MainMenuButtons";
 import { GameScreen } from "./GameScreen";
 
 export class MainMenuScreen extends GameScreen {
-  startGameVsAiBtn: StartGameButton | undefined;
-  startGameVs2ndPlayerBtn: StartGameButton | undefined;
+  quickGameBtn: StartGameButton | undefined;
+  quickGameAiBtn: StartGameButton | undefined;
+  customGameBtn: StartGameButton | undefined;
 
   override onEnter(): void {
-    this.startGameVsAiBtn = new StartGameButton(
+    this.quickGameBtn = new StartGameButton(
       this.game,
       "startGame",
-      "Start Game (vs AI)",
+      "Quick Game (2P)",
       this.userInterfaceConfig.screen.width * 0.5,
       this.userInterfaceConfig.screen.height * 0.65,
       () => {
         this.game._changeState(this.game.states.playing);
       }
     );
-    this.startGameVs2ndPlayerBtn = new StartGameButton(
+    this.quickGameAiBtn = new StartGameButton(
       this.game,
       "startGame",
-      "Start Game (vs 2nd player)",
+      "Quick Game (vs AI)",
       this.userInterfaceConfig.screen.width * 0.5,
       this.userInterfaceConfig.screen.height * 0.75,
+      () => {
+        this.game._changeState(this.game.states.playing);
+      }
+    );
+    this.customGameBtn = new StartGameButton(
+      this.game,
+      "startGame",
+      "Custom Game",
+      this.userInterfaceConfig.screen.width * 0.5,
+      this.userInterfaceConfig.screen.height * 0.85,
       () => {
         this.game._changeState(this.game.states.playing);
       }
@@ -29,8 +40,9 @@ export class MainMenuScreen extends GameScreen {
   }
 
   override onExit(): void {
-    this.startGameVsAiBtn?.remove();
-    this.startGameVs2ndPlayerBtn?.remove();
+    this.quickGameBtn?.remove();
+    this.quickGameAiBtn?.remove();
+    this.customGameBtn?.remove();
   }
 
   override drawForeground(context: CanvasRenderingContext2D): void {
@@ -50,8 +62,9 @@ export class MainMenuScreen extends GameScreen {
       this.userInterfaceConfig.screen.height * 0.5 - 20
     );
 
-    this.startGameVsAiBtn?.draw(context, this.userInterfaceConfig);
-    this.startGameVs2ndPlayerBtn?.draw(context, this.userInterfaceConfig);
+    this.quickGameBtn?.draw(context, this.userInterfaceConfig);
+    this.quickGameAiBtn?.draw(context, this.userInterfaceConfig);
+    this.customGameBtn?.draw(context, this.userInterfaceConfig);
 
     context.restore();
   }

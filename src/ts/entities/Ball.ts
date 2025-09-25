@@ -1,7 +1,6 @@
 import Matter from "matter-js";
 import type { Game } from "../../ts/Main";
 import type { IBallConfig } from "../ConfigTypes";
-import { GAME_CONFIG } from "../data/GameConfig";
 import { CollisionCategory } from "../systems/PhysicsSystem";
 import { addPhysicsComponentAndMatterBody } from "../utils/entityUtils";
 import { BallComponent } from "./components/BallComponent";
@@ -15,7 +14,7 @@ export class Ball extends GameEntity {
     this.addComponent<BallComponent>("ball", new BallComponent());
     addPhysicsComponentAndMatterBody(
       this,
-      Matter.Bodies.circle(initialPosition.x, initialPosition.y, radius * GAME_CONFIG.gameScale, {
+      Matter.Bodies.circle(initialPosition.x, initialPosition.y, radius * this.game.session.gameConfig.gameScale, {
         label: "Ball",
         density,
         restitution: 1,

@@ -2,7 +2,8 @@ import { UserInterface } from "./UserInterface";
 import { DEFAULT_KEY_BINDINGS } from "./data/KeyBindingsData";
 import { USER_INTERFACE_CONFIG } from "./data/ui/UserInterfaceConfig";
 import { GameSession } from "./session/GameSession";
-import { EndGameState, GameState, MainMenuState } from "./states/GameStates";
+import { EndGameState, GameState } from "./states/GameStates";
+import { MainMenuState } from "./states/MainMenuState";
 import { PlayingState } from "./states/PlayingState";
 import { InputHandler } from "./ui/InputHandler";
 import { KeyBindings } from "./ui/KeyBindings";
@@ -16,9 +17,9 @@ export class Game {
   input: InputHandler;
   userInterface: UserInterface;
   states: {
+    mainMenu: MainMenuState;
     playing: PlayingState;
     endGame: EndGameState;
-    mainMenu: MainMenuState;
   };
   state!: GameState;
 
@@ -30,9 +31,9 @@ export class Game {
 
     // State machine setup - change state only using changeState(state) method
     this.states = {
+      mainMenu: new MainMenuState(this),
       playing: new PlayingState(this),
       endGame: new EndGameState(this),
-      mainMenu: new MainMenuState(this),
     };
 
     this.session = new GameSession(this);

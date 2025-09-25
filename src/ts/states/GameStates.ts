@@ -13,19 +13,7 @@ export class GameState {
   handleInput(event: KeyboardEvent): void {}
 }
 
-export class MainMenuState extends GameState {
-  override draw(context: CanvasRenderingContext2D, deltaTime: number): void {
-    this.game.userInterface.drawForeground(context);
-  }
-}
-
 export class EndGameState extends GameState {
-  override draw(context: CanvasRenderingContext2D, deltaTime: number): void {
-    this.game.userInterface.drawForeground(context);
-  }
-}
-
-export class LevelCompleteState extends GameState {
   override draw(context: CanvasRenderingContext2D, deltaTime: number): void {
     this.game.userInterface.drawForeground(context);
   }
