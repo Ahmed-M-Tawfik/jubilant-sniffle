@@ -1,6 +1,6 @@
 import { Game } from "../../ts/Main";
+import type { Button } from "./components/buttons/Button";
 import type { KeyBinding, KeyBindings } from "./KeyBindings";
-import { Button } from "./buttons/Button";
 
 export class InputHandler {
   game: Game;

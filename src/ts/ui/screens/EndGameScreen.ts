@@ -1,11 +1,11 @@
-import { StartGameButton } from "../buttons/MainMenuButtons";
+import { LargeButton } from "../components/buttons/MainMenuButtons";
 import { GameScreen } from "./GameScreen";
 
 export class EndGameScreen extends GameScreen {
-  backToMainMenuBtn: StartGameButton | undefined;
+  backToMainMenuBtn: LargeButton | undefined;
 
   override onEnter(): void {
-    this.backToMainMenuBtn = new StartGameButton(
+    this.backToMainMenuBtn = new LargeButton(
       this.game,
       "backToMainMenu",
       "Back to Main Menu",

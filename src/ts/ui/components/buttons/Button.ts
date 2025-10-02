@@ -1,5 +1,5 @@
-import type { Game } from "../../../ts/Main";
-import type { IUserInterfaceConfig } from "../UserInterfaceConfigTypes";
+import type { Game } from "../../../Main";
+import type { IUserInterfaceConfig } from "../../UserInterfaceConfigTypes";
 
 export class Button {
   constructor(
