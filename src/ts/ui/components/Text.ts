@@ -1,36 +1,43 @@
+import type { IUserInterfaceConfig } from "../UserInterfaceConfigTypes";
+
 export interface TextOptions {
-  font?: string;
+  fontSizeMultiplier?: number; // e.g., 1.2 for 120%
+  fontSizeUnscaled?: string; // e.g., "20px", "1.5em"
+  fontFamily?: string; // e.g., "Arial", "sans-serif"
   color?: string;
   textAlign?: CanvasTextAlign;
   textBaseline?: CanvasTextBaseline;
 }
 
 export class Text {
-  content: string;
-  centerXPos: number;
-  centerYPos: number;
-  font: string;
-  color: string;
-  textAlign: CanvasTextAlign;
-  textBaseline: CanvasTextBaseline;
+  constructor(
+    public content: string,
+    public centerXPos: number,
+    public centerYPos: number,
+    public textOptions: TextOptions = {}
+  ) {}
 
-  constructor(content: string, centerXPos: number, centerYPos: number, options: TextOptions = {}) {
-    this.content = content;
-    this.centerXPos = centerXPos;
-    this.centerYPos = centerYPos;
-    this.font = options.font ?? "16px sans-serif";
-    this.color = options.color ?? "#000";
-    this.textAlign = options.textAlign ?? "left";
-    this.textBaseline = options.textBaseline ?? "alphabetic";
-  }
-
-  draw(context: CanvasRenderingContext2D): void {
+  draw(context: CanvasRenderingContext2D, userInterfaceConfig: IUserInterfaceConfig): void {
     context.save();
 
-    context.fillStyle = this.color;
-    context.font = this.font;
-    context.textAlign = this.textAlign;
-    context.textBaseline = this.textBaseline;
+    // Use userInterfaceConfig for defaults, allow override via textOptions
+    const fontFamily = this.textOptions.fontFamily ?? userInterfaceConfig.fonts.mainButtons.fontFamily;
+    const fontSizeMultiplier = this.textOptions.fontSizeMultiplier ?? 1;
+    if (this.textOptions.fontSizeUnscaled) {
+      context.font = `${this.textOptions.fontSizeUnscaled} ${fontFamily}`;
+    } else {
+      context.font = `${userInterfaceConfig.fonts.mainButtons.fontSize * fontSizeMultiplier}px ${fontFamily}`;
+    }
+
+    context.fillStyle = userInterfaceConfig.colours.primaryText;
+    if (this.textOptions.color) context.fillStyle = this.textOptions.color;
+
+    context.textAlign = "left";
+    if (this.textOptions.textAlign) context.textAlign = this.textOptions.textAlign;
+
+    context.textBaseline = "alphabetic";
+    if (this.textOptions.textBaseline) context.textBaseline = this.textOptions.textBaseline;
+
     context.fillText(this.content, this.centerXPos, this.centerYPos);
 
     context.restore();

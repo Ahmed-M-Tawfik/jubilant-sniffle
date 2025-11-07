@@ -1,4 +1,4 @@
-import type { Button } from "../components/buttons/Button";
+import { Button } from "../components/buttons/Button";
 import { LargeButton } from "../components/buttons/MainMenuButtons";
 import { ScreenBackground } from "../components/ScreenBackground";
 import { Text } from "../components/Text";
@@ -85,10 +85,7 @@ export class MainMenuScreen extends GameScreen {
         this.userInterfaceConfig.screen.width * 0.5,
         this.userInterfaceConfig.screen.height * 0.5 - 20,
         {
-          font:
-            this.userInterfaceConfig.fonts.mainButtons.fontSize * 2 +
-            "px " +
-            this.userInterfaceConfig.fonts.mainButtons.fontFamily,
+          fontSizeMultiplier: 2,
           color: this.userInterfaceConfig.colours.primaryText,
           textAlign: "center",
         }
@@ -103,17 +100,103 @@ export class MainMenuScreen extends GameScreen {
       new Text(
         "Custom Game",
         this.userInterfaceConfig.screen.width * 0.5,
-        this.userInterfaceConfig.screen.height * 0.2,
+        this.userInterfaceConfig.screen.height * 0.1,
         {
-          font:
-            this.userInterfaceConfig.fonts.mainButtons.fontSize * 1.5 +
-            "px " +
-            this.userInterfaceConfig.fonts.mainButtons.fontFamily,
+          fontSizeMultiplier: 1.5,
+          fontFamily: this.userInterfaceConfig.fonts.mainButtons.fontFamily,
           color: this.userInterfaceConfig.colours.primaryText,
           textAlign: "center",
         }
       )
     );
+
+    this.createPlayerOptionsUI(0, -0.3);
+    this.createPlayerOptionsUI(1, 0.3);
+  }
+
+  private createPlayerOptionsUI(playerIndex: number, horizontalOffset: number): void {
+    const playerGameConfig = this.game.session.gameConfig.gameplay.players[playerIndex === 0 ? "player0" : "player1"];
+
+    this.text.push(
+      new Text(
+        "Player " + (playerIndex + 1) + " options",
+        this.userInterfaceConfig.screen.width * (0.5 + horizontalOffset),
+        this.userInterfaceConfig.screen.height * 0.2,
+        {
+          color: this.userInterfaceConfig.colours.primaryText,
+          textAlign: "center",
+        }
+      )
+    );
+
+    this.text.push(
+      new Text(
+        "Paddle type",
+        this.userInterfaceConfig.screen.width * (0.5 + horizontalOffset),
+        this.userInterfaceConfig.screen.height * 0.27,
+        {
+          fontSizeMultiplier: 0.8,
+          color: this.userInterfaceConfig.colours.primaryText,
+          textAlign: "center",
+        }
+      )
+    );
+
+    const btnFontSizeMultiplier = 0.5;
+    let normalButton = new Button(
+      this.game,
+      "Normal",
+      this.userInterfaceConfig.screen.width * (0.5 + horizontalOffset - 0.08),
+      this.userInterfaceConfig.screen.height * 0.32,
+      this.userInterfaceConfig.screen.width * 0.08,
+      this.userInterfaceConfig.screen.height * 0.05
+    );
+    normalButton.textOptions.fontSizeMultiplier = btnFontSizeMultiplier;
+    normalButton.isHighlighted = playerGameConfig.selectedPaddle === "normal";
+    this.buttons.push(normalButton);
+
+    let fastButton = new Button(
+      this.game,
+      "Fast",
+      this.userInterfaceConfig.screen.width * (0.5 + horizontalOffset),
+      this.userInterfaceConfig.screen.height * 0.32,
+      this.userInterfaceConfig.screen.width * 0.05,
+      this.userInterfaceConfig.screen.height * 0.05
+    );
+    fastButton.textOptions.fontSizeMultiplier = btnFontSizeMultiplier;
+    fastButton.isHighlighted = playerGameConfig.selectedPaddle === "fast";
+    this.buttons.push(fastButton);
+
+    let wideButton = new Button(
+      this.game,
+      "Wide",
+      this.userInterfaceConfig.screen.width * (0.5 + horizontalOffset + 0.065),
+      this.userInterfaceConfig.screen.height * 0.32,
+      this.userInterfaceConfig.screen.width * 0.05,
+      this.userInterfaceConfig.screen.height * 0.05
+    );
+    wideButton.textOptions.fontSizeMultiplier = btnFontSizeMultiplier;
+    wideButton.isHighlighted = playerGameConfig.selectedPaddle === "wide";
+    this.buttons.push(wideButton);
+
+    normalButton.onClick = () => {
+      playerGameConfig.selectedPaddle = "normal";
+      wideButton.isHighlighted = false;
+      fastButton.isHighlighted = false;
+      normalButton.isHighlighted = true;
+    };
+    fastButton.onClick = () => {
+      playerGameConfig.selectedPaddle = "fast";
+      wideButton.isHighlighted = false;
+      fastButton.isHighlighted = true;
+      normalButton.isHighlighted = false;
+    };
+    wideButton.onClick = () => {
+      playerGameConfig.selectedPaddle = "wide";
+      wideButton.isHighlighted = true;
+      fastButton.isHighlighted = false;
+      normalButton.isHighlighted = false;
+    };
   }
 
   override drawBackground(context: CanvasRenderingContext2D): void {
@@ -126,7 +209,7 @@ export class MainMenuScreen extends GameScreen {
   override drawForeground(context: CanvasRenderingContext2D): void {
     context.save();
 
-    this.text.forEach((text) => text.draw(context));
+    this.text.forEach((text) => text.draw(context, this.userInterfaceConfig));
 
     this.buttons.forEach((button) => button.draw(context, this.userInterfaceConfig));
 
