@@ -33,6 +33,7 @@ export class MainMenuScreen extends GameScreen {
     this.screenState = newState;
 
     if (newState === "mainMenu") {
+      this.game.session.reset();
       this.setupMainMenuScreen();
     } else {
       this.setupConfigMenuScreen();
@@ -110,6 +111,35 @@ export class MainMenuScreen extends GameScreen {
       )
     );
 
+    // nav buttons
+    this.buttons.push(
+      new Button(
+        this.game,
+        "Back",
+        this.userInterfaceConfig.screen.width * 0.1,
+        this.userInterfaceConfig.screen.height * 0.07,
+        this.userInterfaceConfig.screen.width * 0.13,
+        this.userInterfaceConfig.screen.height * 0.09,
+        () => {
+          this.changeState("mainMenu");
+        }
+      )
+    );
+
+    this.buttons.push(
+      new Button(
+        this.game,
+        "Start Game",
+        this.userInterfaceConfig.screen.width * 0.5,
+        this.userInterfaceConfig.screen.height * 0.9,
+        this.userInterfaceConfig.screen.width * 0.3,
+        this.userInterfaceConfig.screen.height * 0.1,
+        () => {
+          this.game._changeState(this.game.states.playing);
+        }
+      )
+    );
+
     this.createPlayerOptionsUI(0, -0.3);
     this.createPlayerOptionsUI(1, 0.3);
   }
@@ -146,7 +176,7 @@ export class MainMenuScreen extends GameScreen {
     let normalButton = new Button(
       this.game,
       "Normal",
-      this.userInterfaceConfig.screen.width * (0.5 + horizontalOffset - 0.08),
+      this.userInterfaceConfig.screen.width * (0.5 + horizontalOffset - 0.075),
       this.userInterfaceConfig.screen.height * 0.32,
       this.userInterfaceConfig.screen.width * 0.08,
       this.userInterfaceConfig.screen.height * 0.05
@@ -160,7 +190,7 @@ export class MainMenuScreen extends GameScreen {
       "Fast",
       this.userInterfaceConfig.screen.width * (0.5 + horizontalOffset),
       this.userInterfaceConfig.screen.height * 0.32,
-      this.userInterfaceConfig.screen.width * 0.05,
+      this.userInterfaceConfig.screen.width * 0.06,
       this.userInterfaceConfig.screen.height * 0.05
     );
     fastButton.textOptions.fontSizeMultiplier = btnFontSizeMultiplier;
@@ -172,7 +202,7 @@ export class MainMenuScreen extends GameScreen {
       "Wide",
       this.userInterfaceConfig.screen.width * (0.5 + horizontalOffset + 0.065),
       this.userInterfaceConfig.screen.height * 0.32,
-      this.userInterfaceConfig.screen.width * 0.05,
+      this.userInterfaceConfig.screen.width * 0.06,
       this.userInterfaceConfig.screen.height * 0.05
     );
     wideButton.textOptions.fontSizeMultiplier = btnFontSizeMultiplier;

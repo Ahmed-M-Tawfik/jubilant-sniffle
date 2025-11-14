@@ -68,6 +68,7 @@ export class Game {
     this._changeState(this.states.endGame);
   }
   goToMainMenu() {
+    this.session.reset();
     this._changeState(this.states.mainMenu);
   }
 
